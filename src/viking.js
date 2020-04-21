@@ -49,4 +49,58 @@ class Saxon extends Soldier {
 }
 
 // War
-class War {}
+class War {
+    constructor() {
+        this.vikingArmy = []
+        this.saxonArmy = []
+        
+    }
+
+    addViking(viking) {
+        this.vikingArmy.push(viking)
+    }
+
+    addSaxon(saxon) {
+        this.saxonArmy.push(saxon)
+    }
+
+    vikingAttack() {
+        const indexSaxon = Math.floor(Math.random() * this.saxonArmy.length)
+
+        const viking = this.vikingArmy[Math.floor(Math.random() * this.vikingArmy.length)]
+        const saxon = this.saxonArmy[indexSaxon]
+
+        const message = saxon.receiveDamage(viking.strength);
+
+        if(saxon.health <= 0) {
+            this.saxonArmy.splice(indexSaxon, 1)
+        }
+        
+        return message;
+    }
+
+
+    saxonAttack() {
+        
+        const saxon = this.saxonArmy[Math.floor(Math.random() * this.saxonArmy.length)];
+        const viking = this.vikingArmy[Math.floor(Math.random() * this.vikingArmy.length)];
+
+        const message = viking.receiveDamage(saxon.strength);
+
+        this.vikingArmy = this.vikingArmy.filter( viking => {
+            return viking.health > 0;
+        });
+
+        return message
+    }
+
+    showStatus() {
+        if(this.saxonArmy.length === 0) {
+            return 'Vikings have won the war of the century!'
+        } else if (this.vikingArmy.length === 0) {
+            return 'Saxons have fought for their lives and survived another day...'
+        } else {
+           return 'Vikings and Saxons are still in the thick of battle.' 
+        }
+    }
+}
